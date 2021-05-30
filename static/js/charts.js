@@ -81,13 +81,14 @@ function buildCharts(sample) {
     // console.log("x: ",otuLabels);
     // 8. Create the trace for the bar chart. 
     var barData = {x:xticks,
-                y: yticks,
+                y: yticks.map(x=> x+" "),
                 type: 'bar',
                 orientation: 'h',
                 text: labels};
 
     // 9. Create the layout for the bar chart. 
-    var barLayout = { title: "Top 10 Bacteria Cultures Found"};
+    var barLayout = { title: "Top 10 Bacteria Cultures Found",
+                      yaxis: {standoff: 20}};
 
     // 10. Use Plotly to plot the data with the layout. 
     Plotly.newPlot("bar", [barData], barLayout );
@@ -105,7 +106,7 @@ function buildCharts(sample) {
         marker:{
           size: sampleValues.map(x=>(x>200?200:x)),
           color: otuIds,
-          //colorscale: otuIds
+          colorscale: 'Earth',
           opacity: sampleValues.map(x=>0.8)
         }
     }];

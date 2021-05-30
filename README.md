@@ -54,4 +54,5 @@ In this deliverable, I added to the previous code to update a bubble chart
 
 ### Deliverable 4
 
+- Imagen to jumbotron
 ## Summary

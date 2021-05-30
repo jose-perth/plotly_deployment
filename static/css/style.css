@@ -1,27 +1,25 @@
 body{
-    
+    //nothing for now
 }
 
-h1{
-    color: #00ffff;
-    opacity: 1;
+.jumbotron{
+    position:relative;
 }
 .jumbotron{
-    color: white;
+    content: ' ';
     text-align: center;
-    background-image: url("../images/bacteria_image.jpg");
     background-size: cover;
     opacity: 1;
+    style: "background-image:linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%), url('../images/bacteria_image2.jpg')"
 }
-.jumbotron::before {
-    content: "";
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    background-color: rgba(0,0,0,0.25);
+
+.jumbo-content{
+    color: white;
+    opacity: 1;
 }
+
+
+
 
 
 label{
