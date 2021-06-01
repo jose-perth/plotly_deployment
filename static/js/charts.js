@@ -22,6 +22,29 @@ function init() {
 
 // Initialize the dashboard
 init();
+getBacteriaNames();
+
+function getBacteriaNames(){
+  d3.json("samples.json").then((data) => {
+    let samplesArray = data.samples;
+    var types=[];
+    samplesArray.map((sample)=>{
+      let otuLabels = sample.otu_labels;
+      otuLabels.forEach(function(x){
+         let classes = x.split(";");
+         if (classes.length==1) {
+           i=0
+         }
+         else {i=1}
+         if (!types.includes(classes[i])){
+           types.push(classes[i])
+         }
+      });
+    });
+     console.log(types);
+  })
+}
+
 
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
@@ -47,7 +70,8 @@ function buildMetadata(sample) {
     // Hint: Inside the loop, you will need to use d3 to append new
     // tags for each key-value in the metadata.
     Object.entries(result).forEach(([key, value]) => {
-      PANEL.append("h6").text(`${key.toUpperCase()}: ${value}`);
+     // PANEL.append("h6").text(`${key.toUpperCase()}:${".".repeat(10)} ${value}`);
+      PANEL.append("h6").text(`${key.toUpperCase()+".".repeat(9-key.length)+":"} ${value}`);
     });
 
   });
@@ -87,8 +111,9 @@ function buildCharts(sample) {
                 text: labels};
 
     // 9. Create the layout for the bar chart. 
-    var barLayout = { title: "Top 10 Bacteria Cultures Found",
-                      yaxis: {standoff: 20}};
+    var barLayout = { 
+            title:{text:"<b>Top 10 Bacteria Cultures Found</b>"}
+          };
 
     // 10. Use Plotly to plot the data with the layout. 
     Plotly.newPlot("bar", [barData], barLayout );
@@ -115,25 +140,12 @@ function buildCharts(sample) {
     var bubbleLayout = {
       title: "Bacteria Cultures per Sample",
       xaxis:{title:'OTU ID'},
-      margin:{r:100},
+      margin:{r:100, l:100},
       hovermode:"closest"
     };
 
     // 3. Use Plotly to plot the data with the layout.
     Plotly.newPlot("bubble", bubbleData, bubbleLayout); 
-
-    // var types=[];
-    // otuLabels.forEach(function(x){
-    //   let classes = x.split(";");
-    //   if (classes.length==1) {
-    //     i=0
-    //   }
-    //   else {i=1}
-    //   if (!types.includes(classes[i])){
-    //     types.push(classes[i])
-    //   }
-    // });
-    // console.log(types);
 
      // 1. Create a variable that filters the metadata array for the object with the desired sample number.
     var metadata = data.metadata;
@@ -173,10 +185,18 @@ function buildCharts(sample) {
     var gaugeLayout = { 
       title: {text: "",
               font: 'bold'
-              }
+              },
+      margin:{l:0,r:0}
     };
 
     // 6. Use Plotly to plot the gauge data and layout.
     Plotly.newPlot("gauge", gaugeData, gaugeLayout);
   });
 }
+
+function MatchColors(outLabel){
+
+}
+
+// function initColors(){
+//   bubbleColors = {"Bacteroidetes": , "Firmicutes", "Bacteria", "Proteobacteria", "Actinobacteria", "Cyanobacteria", "Synergistetes", "Fusobacteria", "Acidobacteria", "Euryarchaeota", "Spirochaetes", "SR1", "Deinococcus-Thermus", "Verrucomicrobia", "Planctomycetes"]
