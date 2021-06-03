@@ -9,6 +9,8 @@ By selecting test subject ID, the users of the dashboard can obtain the demograp
 
 ## Results
 
+The project can be accessed on:  [https://jose-perth.github.io/plotly_deployment/](https://jose-perth.github.io/plotly_deployment/)
+
 The following files and folders are part of the project:
 
 - [index.html](./index.html)
