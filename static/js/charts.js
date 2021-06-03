@@ -22,7 +22,7 @@ function init() {
 
 // Initialize the dashboard
 init();
-// getBacteriaNames();
+ getBacteriaNames();
 
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
@@ -93,7 +93,7 @@ function buildCharts(sample) {
     Plotly.newPlot("bar", [barData], barLayout );
  
     // Deliverable 2.
-
+          console.log(otuLabels)
     // 1. Create the trace for the bubble chart.
     var bubbleData = [{
         x:otuIds,
@@ -103,15 +103,16 @@ function buildCharts(sample) {
         mode: "markers",
         marker:{
           size: sampleValues.map(x=>(x>200?200:x)),
-          color: otuIds,
-          colorscale: 'Earth',
+          //color: otuIds,
+          color: otuLabels.map(bubbleColor),
+          //colorscale: 'Earth',
           opacity: sampleValues.map(x=>0.8)
         }
     }];
 
     // 2. Create the layout for the bubble chart.
     var bubbleLayout = {
-      title: "Bacteria Cultures per Sample",
+      title: "Bacteria Cultures per Sample color by Phylum",
       xaxis:{title:'OTU ID'},
       margin:{r:100, l:100},
       hovermode:"closest"
@@ -164,31 +165,55 @@ function buildCharts(sample) {
   });
 }
 
-function MatchColors(outLabel){
-
+// return a color based on the either the 1st of second classification level on the otuLabels
+function bubbleColor(sampleLabel){
+   let classes = sampleLabel.split(";");
+  if (classes.length==1){
+    i = 0;
+  } else {i = 1};
+  switch (classes[i]) {
+    case "Bacteria": return "green"
+    case "Bacteroidetes": return "lightgreen"
+    case "Firmicutes": return "red"
+    case  "Bacteria": return "lightred"
+    case  "Proteobacteria": return "blue"
+    case  "Actinobacteria": return "lightblue"
+    case  "Cyanobacteria": return "orange"
+    case  "Synergistetes": return "yellow"
+    case  "Fusobacteria": return "purple"
+    case  "Acidobacteria": return "brown"
+    case  "Euryarchaeota": return "Cyan"
+    case  "Spirochaetes": return "skyblue"
+    case  "SR1": return "Aqua"
+    case  "Deinococcus-Thermus": return "Coral"
+    case  "Verrucomicrobia": return "HotPink"
+    case  "Planctomycetes": return "seagreen"
+    default:
+      return "grey";
+  }
 }
 
 // function initColors(){
-//   bubbleColors = {"Bacteroidetes": , "Firmicutes", "Bacteria", "Proteobacteria", "Actinobacteria", "Cyanobacteria", "Synergistetes", "Fusobacteria", "Acidobacteria", "Euryarchaeota", "Spirochaetes", "SR1", "Deinococcus-Thermus", "Verrucomicrobia", "Planctomycetes"]
+//   bubbleColors = {"Bacteroidetes": case  "Firmicutes", "Bacteria", "Proteobacteria", "Actinobacteria", "Cyanobacteria", "Synergistetes", "Fusobacteria", "Acidobacteria", "Euryarchaeota", "Spirochaetes", "SR1", "Deinococcus-Thermus", "Verrucomicrobia", "Planctomycetes"]
 
 // temporary function to get the 1st or second name classification across all the samples.  
-// function getBacteriaNames(){
-//   d3.json("samples.json").then((data) => {
-//     let samplesArray = data.samples;
-//     var types=[];
-//     samplesArray.map((sample)=>{
-//       let otuLabels = sample.otu_labels;
-//       otuLabels.forEach(function(x){
-//          let classes = x.split(";");
-//          if (classes.length==1) {
-//            i=0
-//          }
-//          else {i=1}
-//          if (!types.includes(classes[i])){
-//            types.push(classes[i])
-//          }
-//       });
-//     });
-//      console.log(types);
-//   })
-// };
+function getBacteriaNames(){
+  d3.json("samples.json").then((data) => {
+    let samplesArray = data.samples;
+    var types=[];
+    samplesArray.map((sample)=>{
+      let otuLabels = sample.otu_labels;
+      otuLabels.forEach(function(x){
+         let classes = x.split(";");
+         if (classes.length==1) {
+           i=0
+         }
+         else {i=1}
+         if (!types.includes(classes[i])){
+           types.push(classes[i])
+         }
+      });
+    });
+     console.log(types);
+  })
+};

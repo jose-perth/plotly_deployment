@@ -164,9 +164,55 @@ var barData = {x:xticks,
                 text: labels};
 ```
 
+5. **Color code Bubble chart by Phylum**: I wanted to color code the bubbles to represent the phylum of the sample.  By creating a ```bubbleColor``` function that assigns a color from the Phylum level of the otuLabel, I was able to show this.  I did an initial analysis of the dataset to ensure I covered all the phylum present in the data.
+
+```js
+    // 1. Create the trace for the bubble chart.
+    var bubbleData = [{
+        x:otuIds,
+        y:sampleValues,
+        text: otuLabels,
+        type:"scatter",
+        mode: "markers",
+        marker:{
+          size: sampleValues.map(x=>(x>200?200:x)),
+          color: otuLabels.map(bubbleColor),
+          opacity: sampleValues.map(x=>0.8)
+        }
+    }];
+
+// return a color based on the either the 1st of second classification level on the otuLabels
+function bubbleColor(sampleLabel){
+   let classes = sampleLabel.split(";");
+  if (classes.length==1){
+    i = 0;
+  } else {i = 1};
+  switch (classes[i]) {
+    case "Bacteria": return "green"
+    case "Bacteroidetes": return "lightgreen"
+    case "Firmicutes": return "red"
+    case  "Bacteria": return "lightred"
+    case  "Proteobacteria": return "blue"
+    case  "Actinobacteria": return "lightblue"
+    case  "Cyanobacteria": return "orange"
+    case  "Synergistetes": return "yellow"
+    case  "Fusobacteria": return "purple"
+    case  "Acidobacteria": return "brown"
+    case  "Euryarchaeota": return "Cyan"
+    case  "Spirochaetes": return "skyblue"
+    case  "SR1": return "Aqua"
+    case  "Deinococcus-Thermus": return "Coral"
+    case  "Verrucomicrobia": return "HotPink"
+    case  "Planctomycetes": return "seagreen"
+    default:
+      return "grey";
+  }
+}
+```
+
 Here is the snapshot after these improvements:
 
-![After improvements shot](./resources/snapshot_all_dashboard_after.png)
+![After improvements shot](./resources/snapshot_all_dashboard_after2.png)
 
 When rendered on an iPad:
 
@@ -178,6 +224,6 @@ In this challenge we made use of the Plotly library to present a dashboard about
 
 Further improvements:
 
-- Color the bubbles by the Baterial family and show in a legend.
 - Allow comparison between 2 test subject IDs.
 - Include a bubble chart with all test subject IDs so that most common cultures across all subjects can be identified.
+- Allow the coloring of the bubble chart to be dynamic and not hardwired to the phylum names.
