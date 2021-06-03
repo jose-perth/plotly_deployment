@@ -22,29 +22,7 @@ function init() {
 
 // Initialize the dashboard
 init();
-getBacteriaNames();
-
-function getBacteriaNames(){
-  d3.json("samples.json").then((data) => {
-    let samplesArray = data.samples;
-    var types=[];
-    samplesArray.map((sample)=>{
-      let otuLabels = sample.otu_labels;
-      otuLabels.forEach(function(x){
-         let classes = x.split(";");
-         if (classes.length==1) {
-           i=0
-         }
-         else {i=1}
-         if (!types.includes(classes[i])){
-           types.push(classes[i])
-         }
-      });
-    });
-     console.log(types);
-  })
-}
-
+// getBacteriaNames();
 
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
@@ -70,7 +48,6 @@ function buildMetadata(sample) {
     // Hint: Inside the loop, you will need to use d3 to append new
     // tags for each key-value in the metadata.
     Object.entries(result).forEach(([key, value]) => {
-     // PANEL.append("h6").text(`${key.toUpperCase()}:${".".repeat(10)} ${value}`);
       PANEL.append("h6").text(`${key.toUpperCase()+".".repeat(9-key.length)+":"} ${value}`);
     });
 
@@ -100,9 +77,6 @@ function buildCharts(sample) {
     var xticks = sampleValues.slice(0,10).reverse();
     var labels = otuLabels.slice(0,10).reverse();
 
-    // console.log("y: ",sampleValues);
-    // console.log("x: ",otuIds);
-    // console.log("x: ",otuLabels);
     // 8. Create the trace for the bar chart. 
     var barData = {x:xticks,
                 y: yticks.map(x=> x+" "),
@@ -127,7 +101,6 @@ function buildCharts(sample) {
         text: otuLabels,
         type:"scatter",
         mode: "markers",
-        //color: otuIds,
         marker:{
           size: sampleValues.map(x=>(x>200?200:x)),
           color: otuIds,
@@ -154,9 +127,6 @@ function buildCharts(sample) {
     var result = resultArray[0];
     // 3. Create a variable that holds the washing frequency.
     var washFreq = (result.wfreq);
-    console.log(resultArray)
-    console.log(result)
-    console.log(washFreq);
     // 4. Create the trace for the gauge chart.
     var gaugeData = [
      {
@@ -200,3 +170,25 @@ function MatchColors(outLabel){
 
 // function initColors(){
 //   bubbleColors = {"Bacteroidetes": , "Firmicutes", "Bacteria", "Proteobacteria", "Actinobacteria", "Cyanobacteria", "Synergistetes", "Fusobacteria", "Acidobacteria", "Euryarchaeota", "Spirochaetes", "SR1", "Deinococcus-Thermus", "Verrucomicrobia", "Planctomycetes"]
+
+// temporary function to get the 1st or second name classification across all the samples.  
+// function getBacteriaNames(){
+//   d3.json("samples.json").then((data) => {
+//     let samplesArray = data.samples;
+//     var types=[];
+//     samplesArray.map((sample)=>{
+//       let otuLabels = sample.otu_labels;
+//       otuLabels.forEach(function(x){
+//          let classes = x.split(";");
+//          if (classes.length==1) {
+//            i=0
+//          }
+//          else {i=1}
+//          if (!types.includes(classes[i])){
+//            types.push(classes[i])
+//          }
+//       });
+//     });
+//      console.log(types);
+//   })
+// };

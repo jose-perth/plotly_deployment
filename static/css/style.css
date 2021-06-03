@@ -6,7 +6,6 @@
     text-align: center;
     background-size: cover;
     opacity: 1;
-    style: "background-image:linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%), url('../images/bacteria_image2.jpg')"
 }
 
 .jumbo-content{
